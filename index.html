@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="lofi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VueJS 3 CRUD Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="flex flex-col min-h-screen justify-between bg-base-200" id="app">
+    <header>
+        <div class="navbar bg-base-100 border-b shadow">
+            <div class="navbar-start">
+                <div class="flex-1">
+                    <a class="btn btn-ghost text-xl">CRUD Manager</a>
+                </div>
+            </div>
+            <div class="navbar-center">
+                <ul class="menu menu-horizontal px-1">
+                    <li><a href="#">Accueil</a></li>
+                    <li><a href="#">Gestion des étudiants</a></li>
+                    <!-- <li>
+                            <details>
+                                <summary>Parent</summary>
+                                <ul class="p-2">
+                                    <li><a>Submenu 1</a></li>
+                                    <li><a>Submenu 2</a></li>
+                                </ul>
+                            </details>
+                        </li> -->
+                </ul>
+            </div>
+            <div class="navbar-end">
+                <div class="flex-none gap-2">
+                    <div class="form-control">
+                        <input type="text" placeholder="Search" class="input input-bordered w-24 md:w-auto" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="content w-auto">
+        <div class="hero" v-if="showHome">
+            <div class="hero-content text-center my-8">
+                <div class="max-w-md">
+                    <h1 class="text-5xl font-bold">Hello there !</h1>
+                    <p class="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi
+                        exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+                    <button class="btn btn-primary">Get Started</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="student-card mx-auto" v-if="showCreateForm || showStudentsList">
+            <div class="student-form form w-2/3 mx-auto flex justify-center my-8">
+                <div class="student-form card shrink-0 w-full shadow-2xl bg-base-100">
+                    <form class="card-body">
+                        <h2 class="form-title text-2xl font-semibold mb-4">Formulaire de création de nouvel
+                            étudiant
+                        </h2>
+                        <div class="flex flex-row gap-4">
+                            <div class="form-control w-1/2">
+                                <label class="label" for="inputName">
+                                    <span class="label-text">Nom(s)</span>
+                                </label>
+                                <input type="text" id="inputName" name="inputName" class="input input-bordered"
+                                    required />
+                            </div>
+                            <div class="form-control w-1/2">
+                                <label class="label" for="inputFirstname">
+                                    <span class="label-text">Prénom(s)</span>
+                                </label>
+                                <input type="text" id="inputFirstname" name="inputFirstname"
+                                    class="input input-bordered" required />
+                            </div>
+                        </div>
+                        <div class="flex flex-row gap-4">
+                            <div class="form-control w-1/2">
+                                <label class="label" for="inputBirthdate">
+                                    <span class="label-text">Date de naissance</span>
+                                </label>
+                                <input type="date" id="inputBirthdate" name="inputBirthdate"
+                                    class="input input-bordered" required />
+                            </div>
+                            <div class="form-control w-1/2">
+                                <label class="label" for="selectLevel">
+                                    <span class="label-text">Niveau scolaire</span>
+                                </label>
+                                <select name="selectLevel" id="selectLevel" class="select select-bordered" required>
+                                    <option value=""></option>
+                                    <option value="Terminal A">Terminal A</option>
+                                    <option value="Terminal B">Terminal B</option>
+                                    <option value="Terminal C">Terminal C</option>
+                                    <option value="Première A">Première A</option>
+                                    <option value="Première B">Première B</option>
+                                    <option value="Première C">Première C</option>
+                                    <option value="Seconde A">Seconde A</option>
+                                    <option value="Seconde B">Seconde B</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-control w-1/3 mt-6 flex flex-row gap-4">
+                            <button class="btn btn-primary w-1/2">Créer</button>
+                            <button class="btn btn-primary w-1/2">Retourner à la liste</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="student-table w-2/3 mx-auto mb-8">
+                <div class="card shrink-0 w-full shadow-2xl bg-base-100">
+                    <div class="card-body">
+                        <div class="flex flex-row justify-between">
+                            <h2 class="table-title text-2xl font-semibold mt-12 mb-4">Liste des étudiants</h2>
+                            <input type="text" placeholder="Search" class="input input-bordered w-24 md:w-96" />
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="table">
+                                <thead class="text-lg">
+                                    <tr>
+                                        <th class="text-center"></th>
+                                        <th class="text-center">Nom(s)</th>
+                                        <th class="text-center">Prénom(s)</th>
+                                        <th class="text-center">Date de naissance</th>
+                                        <th class="text-center">Niveau Scolaire</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th class="text-center">1</th>
+                                        <th class="text-center">Test</th>
+                                        <td class="text-center">Test</td>
+                                        <td class="text-center">Test</td>
+                                        <td class="text-center">Test</td>
+                                        <td class="text-center flex flex-row gap-4 justify-center">
+                                            <button class="btn btn-primary">Éditer</button>
+                                            <button class="btn btn-primary">Supprimer</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer footer-center p-4 bg-base-300 bottom-0 mt-auto text-base-content">
+        <aside>
+            <p>Copyright © 2024 - All right reserved by ACME Industries Ltd</p>
+        </aside>
+    </footer>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
